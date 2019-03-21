@@ -1,0 +1,13 @@
+body {
+font-family: 'Srisakdi', cursive;
+font-weight: 700;
+}
+
+.container {
+  /* width: 60%; */
+  font-size: 1.1rem;
+}
+
+input {
+  width: 50%;
+}

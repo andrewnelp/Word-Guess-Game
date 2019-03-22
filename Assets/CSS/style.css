@@ -11,3 +11,8 @@ font-weight: 700;
 input {
   width: 50%;
 }
+
+.winScore {
+  color: red;
+  font-size: 1.5rem;
+}

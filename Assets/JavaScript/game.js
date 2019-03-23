@@ -29,6 +29,7 @@ var at;
     //puting them in a string
      s = answerArray.join(' ');
     document.getElementById('randomWord').innerHTML = s;
+    //need to set a default picture at the right by setAtrribute
    });
 
   
@@ -43,6 +44,7 @@ var at;
         for (var i = 0; i < randomWord.length; i++) {
           if (randomWord[i] === letter) {
             // assigning this letter 
+            //the problem is that it shows the letter but not previous letters guessed;
             answerArray[i] = letter;
             document.querySelector('#randomWord').innerHTML = answerArray.join(' ');
             
@@ -53,6 +55,7 @@ var at;
               alert("you win!");
               //adding a winscore +1 when the word is guessed fully
               return;
+              //need to add also a new picture setAttribute;
             }
             winScore++;
             document.getElementById('winScore').innerHTML = winScore;

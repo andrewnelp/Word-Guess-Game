@@ -12,7 +12,7 @@ var remainingLetters = randomWord.length;
 var winScore = 0;
 //Empty array to store the guesses
 var answerArray = [];
-//var lettersGuessedArr = [];
+var lettersGuessedArr = [];
 //var l;
 var output = '';
 var at;
@@ -47,6 +47,7 @@ var at;
             //the problem is that it shows the letter but not previous letters guessed;
             answerArray[i] = letter;
             document.querySelector('#randomWord').innerHTML = answerArray.join(' ');
+            lettersGuessedArr.push(letter);
           }
       } 
       //remaining letters do not show correctly and when 0 the program do not stop
@@ -63,16 +64,15 @@ var at;
          document.getElementById('winScore').innerHTML = winScore;
          return;
          //need to add also a new picture setAttribute;
+       } 
+         else if(attemptsLeft = 0) {
+          alert('You Lost!');
+          return;
        }
-       
-    });
+    }
+  );
    
-// function to stop a program when remaining guesses = 0. How to call this function?
-// function attemptsLefts() {
-//   if (attemptsLeft = 0) {
-//     alert('You Lost!');
-//     return;
-//   }
+
 
 
 

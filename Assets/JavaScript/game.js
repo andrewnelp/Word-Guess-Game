@@ -1,76 +1,107 @@
-
+$(function () {
 // 1.Create and array to hold the presidents of big 8
-var game = ['trump','merkel', 'putin'];
-var s;
-var count = 0;//for letters guessed checking
-var attemptsLeft = 11;
-
-var randomNum = Math.floor(Math.random() * game.length);
-var randomWord = game[randomNum];
-var remainingLetters = randomWord.length;
-//var win = randomWord;
+var game = ['trump','merkol', 'putin'];
+var s = "";
+var attemptsLeft = 10;
+var randomNum;
+var randomWord;
 var winScore = 0;
 //Empty array to store the guesses
 var answerArray = [];
-var lettersGuessedArr = [];
-//var l;
-var output = '';
-var at;
+var replaceArr = [];
+var lettersPressedArr = [];
+var l;
+var letter;
 
-
-   document.addEventListener("keyup", function (event) {
-    
+function startGame() {
+  randomNum = Math.floor(Math.random() * game.length);
+  randomWord = game[randomNum];
+  console.log(randomWord);
+  //the number of underscores matches the random Word 
+  for (var i = 0; i < randomWord.length; i++) {
     //filling the answerArr with inderscores
-//the number of underscores matches the random Word 
-    for (var i = 0; i < randomWord.length; i++) {
-      answerArray[i] = '_ ';
-      
-    }
+    answerArray[i] = '_';
     //puting them in a string
-     s = answerArray.join(' ');
-    document.getElementById('randomWord').innerHTML = s;
-    //need to set a default picture at the right by setAtrribute
-   });
+    s = answerArray.join(' ');
+    $('#randomWord').text(s);
+    // $('#winLose').show(4000);
+    // $('#winLose').text('You Have 10 chances to Guess Letters!!!').css('color', 'black');  
+    attemptsLeft = 10;
+    $('#attemptsLeft').text(attemptsLeft);
+    // lettersPresseddArr = [];
+    $('#lettersPressed').text('Press a new letter').css('font-size', '1.2rem');
+    $('img').attr('src', 'Assets/Images/G8.jpg').fadeIn(1000);
+  }
+};
+// setTimeout(startGame(), 500);
+startGame();
+
+
+$(window).keyup(function(event) {
+    var keyNum = event.keyCode;
+    letter = String.fromCharCode(keyNum).toLowerCase();
 
   
-     document.addEventListener("keyup", function() {
-      //here we get the letter that the user typed in the box
-       var keyNum = event.keyCode;
-       //making sure there is a guess and letters lower case used
-       var letter = String.fromCharCode(keyNum).toLowerCase();
-       console.log(letter);
-       
-        // if the randomWord contains a letter that user typed in
-        for (var i = 0; i < randomWord.length; i++) {
-          if (randomWord[i] === letter) {
-            // assigning this letter 
-            //the problem is that it shows the letter but not previous letters guessed;
-            answerArray[i] = letter;
-            document.querySelector('#randomWord').innerHTML = answerArray.join(' ');
-            lettersGuessedArr.push(letter);
-          }
-      } 
-      //remaining letters do not show correctly and when 0 the program do not stop
-       remainingLetters--;
-       console.log(remainingLetters);
-       attemptsLeft--;
-       document.getElementById('attemptsLeft').innerHTML = at;
-
-       // when the word is guessed - does not work!!! shows remaining letters = 0 immediatelly;
-       if (remainingLetters = 0) {
-         alert("you win!");
-         //adding a winscore +1 when the word is guessed fully
-         winScore++;
-         document.getElementById('winScore').innerHTML = winScore;
-         return;
-         //need to add also a new picture setAttribute;
-       } 
-         else if(attemptsLeft = 0) {
-          alert('You Lost!');
-          return;
-       }
+    for (var j = 0; j < randomWord.length; j++) {
+      if (randomWord[j] === letter) {
+        // converting a join arr into array
+        replaceArr = s.split(' ');
+       var x  = randomWord.indexOf(letter);
+       replaceArr[x] = letter;
+       //for showing purpose s join
+       s = replaceArr.join(' ');
+        $('#randomWord').text(s);
+        roundOver();
+     } 
     }
-  );
+  if (randomWord[j] !== letter) {
+    attemptsLeft--;
+    $('#attemptsLeft').text(attemptsLeft);
+    roundOver();
+  }
+  
+  lettersPressedArr.push(letter);
+  l = lettersPressedArr.join(' ');
+  $('#lettersPressed').text(l);
+  });
+
+//finding remainin Letters
+function roundOver() {
+  var finishWord = randomWord.split('');
+  if (finishWord.toString() == replaceArr.toString()){
+    // alert('you win');
+    winScore++
+    $('#winScore').text(winScore);
+    $('#winLose').show(1000).text(randomWord.toUpperCase()).css('transform', 'scale(2.0)');
+    $('#winLose').css('color', 'red');
+    $('#winLose').fadeOut(3000);
+
+    //add pictures, does not work
+    
+    if (randomWord == game[0].toString()) {
+      $('img').attr('src', 'Assets/Images/trump.jpg');
+      $('img').hide(1000);
+    }
+    if (randomWord == game[1].toString()) {
+      $('img').attr('src', 'Assets/Images/merkol.jpg');
+      $('img').hide(1000);
+    }
+    if (randomWord == game[2].toString()) {
+      $('img').attr('src', 'Assets/Images/putin.jpg');
+      $('img').hide(1000);
+    }
+    if(attemptsLeft <= 0) {
+      $('#winLose').text('YOU LOSE!!!');
+      $('#winLose').hide(1500);
+      
+    }
+    startGame();
+  } 
+  
+} 
+
+}); 
+  
    
 
 

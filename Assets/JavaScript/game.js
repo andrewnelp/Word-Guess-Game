@@ -11,8 +11,8 @@ var answerArray = [];
 var replaceArr = [];
 var lettersPressedArr = [];
 var l;
-var letter;
-  var keyNum;
+// var letter;
+var keyNum;
 
 function startGame() {
   randomNum = Math.floor(Math.random() * game.length);
@@ -28,82 +28,97 @@ function startGame() {
     $('#randomWord').text(s);
     attemptsLeft = 10;
     $('#attemptsLeft').text(attemptsLeft);
-    lettersPressedArr = [];
+    let lettersPressedArr = [];
     l = lettersPressedArr.join('');
     $('#lettersPressed').text(l);
 
     $('#lettersPressed').text('Press a new letter');
-    $('img').attr('src', 'Assets/Images/G8.jpg').fadeIn(1000);
+    // $('img').attr('src', 'Assets/Images/G8.jpg').show(1000);empty
   }
 };
 startGame();
-
+// 
 
 $(window).keyup(function(event) {
     keyNum = event.keyCode;
-    letter = String.fromCharCode(keyNum).toLowerCase();
+    let letter = String.fromCharCode(keyNum).toLowerCase();
   // debugger;
   
 
-  for (i = 0; i < randomWord.length; i++) {
+  for (let i = 0; i < randomWord.length; i++) {
 
-    res = randomWord.charAt(i);
-    // console.log(res)
-    if (res == letter) {
-
+    let res = randomWord.charAt(i);
+    if ( letter == res) {
       //replace res in s
       replaceArr = s.split(' ');
       replaceArr[i] = res;
       s = replaceArr.join(' ');
       $('#randomWord').text(s);
-      roundOver();
-    } else if (res !== keyNum) {
-      // 
-      lettersPressedArr.push(letter);
-      l = lettersPressedArr.join(' ');
-      $('#lettersPressed').text(l);
-      attemptsLeft--
+      
+    } 
+
     }
+
+  if (!randomWord.includes(letter)) {
+    // console.log(randomWord[i])
+
+    lettersPressedArr.push(letter);
+    let l = lettersPressedArr.join(' ');
+    $('#lettersPressed').text(l);
+    attemptsLeft--;
+    $('#attemptsLeft').text(attemptsLeft);
+    leftAttempts();
     
   }
   
+  roundOver(); 
   });
 
 //finding remainin Letters
 function roundOver() {
   var finishWord = randomWord.split('');
+  console.log(game[0])
   if (finishWord.toString() == replaceArr.toString()){
-    // alert('you win');
     winScore++
-    $('#winScore').text(winScore);
-    $('#winLose').show(1000).text(randomWord.toUpperCase()).css('transform', 'scale(2.0)');
-    $('#winLose').css('color', 'red');
-    $('#winLose').fadeOut(3000);
+    $('#winLose').text('YOU WIN!!!');
+    $('#winLose').animate({ opacity: 0.1, fontSize: 35 }, 400);
+    $('#winLose').animate({ opacity: 1 }, 500).css('color', 'red');
+    $('#winLose').fadeOut(1000);
 
-  if (attemptsLeft <= 0) {
-    $('#winLose').text('YOU LOSE!!!');
-    $('#winLose').hide(1500);
-  }  
-  
-    //add pictures, does not work
-    
-    if (randomWord == game[0].toString()) {
+    if (randomWord == game[0]) {
       $('img').attr('src', 'Assets/Images/trump.jpg');
-      $('img').hide(1000);
+      $('img').animate({ opacity: 0.1}, 400);
+      $('img').animate({ opacity: 1 }, 500);
+      $('img').fadeOut(1000);
+
     }
-    if (randomWord == game[1].toString()) {
+    if (randomWord == game[1]) {
       $('img').attr('src', 'Assets/Images/merkol.jpg');
-      $('img').hide(1000);
+      $('img').animate({ opacity: 0.1 }, 400);
+      $('img').animate({ opacity: 1 }, 500);
+      $('img').fadeOut(1000);
     }
-    if (randomWord == game[2].toString()) {
+    if (randomWord == game[2]) {
       $('img').attr('src', 'Assets/Images/putin.jpg');
-      $('img').hide(1000);
+      $('img').animate({ opacity: 0.1 }, 400);
+      $('img').animate({ opacity: 1 }, 500);
+      $('img').fadeOut(1000);
     }
-    
-   startGame();
-  } 
+    startGame();
+  }
   
 } 
+
+function leftAttempts(){
+  if (attemptsLeft < 1) {
+    $('#winLose').text('YOU LOSE!!!');
+    $('#winLose').animate({ opacity: 0.1, fontSize: 35}, 400);
+    $('#winLose').animate({ opacity: 1}, 500).css('color', 'red');
+    $('#winLose').fadeOut(1000);
+    startGame();
+  }
+ 
+}
 
 }); 
   

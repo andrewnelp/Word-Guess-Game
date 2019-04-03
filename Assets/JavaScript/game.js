@@ -1,6 +1,6 @@
 $(function () {
 // 1.Create and array to hold the presidents of big 8
-var game = ['trump','merkol', 'putin'];
+var game = ['trump','merkel', 'putin'];
 var s = "";
 var attemptsLeft = 10;
 var randomNum;
@@ -12,10 +12,12 @@ var replaceArr = [];
 var lettersPressedArr = [];
 var l;
 var letter;
+  var keyNum;
 
 function startGame() {
   randomNum = Math.floor(Math.random() * game.length);
   randomWord = game[randomNum];
+  answerArray = [];
   console.log(randomWord);
   //the number of underscores matches the random Word 
   for (var i = 0; i < randomWord.length; i++) {
@@ -24,45 +26,47 @@ function startGame() {
     //puting them in a string
     s = answerArray.join(' ');
     $('#randomWord').text(s);
-    // $('#winLose').show(4000);
-    // $('#winLose').text('You Have 10 chances to Guess Letters!!!').css('color', 'black');  
     attemptsLeft = 10;
     $('#attemptsLeft').text(attemptsLeft);
-    // lettersPresseddArr = [];
-    $('#lettersPressed').text('Press a new letter').css('font-size', '1.2rem');
+    lettersPressedArr = [];
+    l = lettersPressedArr.join('');
+    $('#lettersPressed').text(l);
+
+    $('#lettersPressed').text('Press a new letter');
     $('img').attr('src', 'Assets/Images/G8.jpg').fadeIn(1000);
   }
 };
-// setTimeout(startGame(), 500);
 startGame();
 
 
 $(window).keyup(function(event) {
-    var keyNum = event.keyCode;
+    keyNum = event.keyCode;
     letter = String.fromCharCode(keyNum).toLowerCase();
-
+  // debugger;
   
-    for (var j = 0; j < randomWord.length; j++) {
-      if (randomWord[j] === letter) {
-        // converting a join arr into array
-        replaceArr = s.split(' ');
-       var x  = randomWord.indexOf(letter);
-       replaceArr[x] = letter;
-       //for showing purpose s join
-       s = replaceArr.join(' ');
-        $('#randomWord').text(s);
-        roundOver();
-     } 
+
+  for (i = 0; i < randomWord.length; i++) {
+
+    res = randomWord.charAt(i);
+    // console.log(res)
+    if (res == letter) {
+
+      //replace res in s
+      replaceArr = s.split(' ');
+      replaceArr[i] = res;
+      s = replaceArr.join(' ');
+      $('#randomWord').text(s);
+      roundOver();
+    } else if (res !== keyNum) {
+      // 
+      lettersPressedArr.push(letter);
+      l = lettersPressedArr.join(' ');
+      $('#lettersPressed').text(l);
+      attemptsLeft--
     }
-  if (randomWord[j] !== letter) {
-    attemptsLeft--;
-    $('#attemptsLeft').text(attemptsLeft);
-    roundOver();
+    
   }
   
-  lettersPressedArr.push(letter);
-  l = lettersPressedArr.join(' ');
-  $('#lettersPressed').text(l);
   });
 
 //finding remainin Letters
@@ -76,6 +80,11 @@ function roundOver() {
     $('#winLose').css('color', 'red');
     $('#winLose').fadeOut(3000);
 
+  if (attemptsLeft <= 0) {
+    $('#winLose').text('YOU LOSE!!!');
+    $('#winLose').hide(1500);
+  }  
+  
     //add pictures, does not work
     
     if (randomWord == game[0].toString()) {
@@ -90,12 +99,8 @@ function roundOver() {
       $('img').attr('src', 'Assets/Images/putin.jpg');
       $('img').hide(1000);
     }
-    if(attemptsLeft <= 0) {
-      $('#winLose').text('YOU LOSE!!!');
-      $('#winLose').hide(1500);
-      
-    }
-    startGame();
+    
+   startGame();
   } 
   
 } 
